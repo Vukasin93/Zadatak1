@@ -25,7 +25,8 @@ class ArticlesController extends Controller
     public function index()
     {
         $articles=Article::paginate(10);
-        return ArticleResource::collection($articles);
+        return view('articles.index')->with('articles',$articles);
+        //return ArticleResource::collection($articles);
     }
 
     /**
@@ -49,13 +50,28 @@ class ArticlesController extends Controller
         $this->validate($request,[
             'title'=>'required',
             'body'=>'required',
+            'cover-image' => 'image|nullable|max:1999'
             ]);
+
+            if($request->hasFile('cover-image'))
+            {
+                $fileNameWithExt= $request->file('cover-image')->getClientOriginalName();
+                $filename=pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+                $ext= $request->file('cover-image')->getClientOriginalExtension();
+                $fileNameToStore= $filename."_".time().".".$ext;
+                $path=$request->file('cover-image')->storeAs('public/cover-images', $fileNameToStore);
+            }
+            else
+            {
+                $fileNameToStore='noimage.jpg';
+            }
 
         $article=$request->isMethod('put')?Article::findOrFail($request->article_id):new Article;
 
         $article->title = $request->input('title');
         $article->body = $request->input('body');
         $article->user_id=auth()->user()->id;
+        $article->cover_image = $fileNameToStore;
         $article->save();
 
         return redirect ('/home')->with('success', 'Article Created');
