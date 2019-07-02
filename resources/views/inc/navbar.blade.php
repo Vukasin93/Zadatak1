@@ -24,9 +24,9 @@
                     &nbsp;
                 </ul>
                 <ul class="nav navbar-nav ">
-                  <li><a  href="/zadatak1/public/">Home</a></li> 
-                  <li><a  href="/zadatak1/public/articles">List Articles</a></li> 
-                  <li><a href="/zadatak1/public/articles/create">Create Article</a></li>
+                  <li><a  href="/zadatak/public/">Home</a></li> 
+                  <li><a  href="/zadatak/public/articles">List Articles</a></li> 
+                  <li><a href="/zadatak/public/articles/create">Create Article</a></li>
                 </ul>
 
 

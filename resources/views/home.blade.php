@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <a href='/zadatak1/public/articles/create'  class="btn btn-primary">Create article</a>
+                    <a href='/zadatak/public/articles/create'  class="btn btn-primary">Create article</a>
                     <h3>Your Articles</h3>
                     @if(count($articles)>0)
                     <table class='table table-striped'>
@@ -25,7 +25,7 @@
                         @foreach($articles as $article)
                         <tr>
                                 <td>{{$article->title}}</td>
-                                <td><a href="/zadatak1/public/articles/{{$article->id}}/edit" class="btn btn-default">Edit</a></td>
+                                <td><a href="/zadatak/public/articles/{{$article->id}}/edit" class="btn btn-default">Edit</a></td>
                                 <td>
 
                                  {{Form::open(['action' => ['ArticlesController@destroy',$article->id],'method' => 'POST' ,'class'=>'pull-right'])}}

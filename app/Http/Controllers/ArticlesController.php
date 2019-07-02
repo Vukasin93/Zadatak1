@@ -51,7 +51,8 @@ class ArticlesController extends Controller
             'body'=>'required',
             ]);
 
-        $article= new Article;
+        $article=$request->isMethod('put')?Article::findOrFail($request->article_id):new Article;
+
         $article->title = $request->input('title');
         $article->body = $request->input('body');
         $article->user_id=auth()->user()->id;
@@ -68,7 +69,8 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        //
+        $article=Article::findOrFail($id);
+        return view('articles.show')->with('article',$article);
     }
 
     /**
@@ -102,6 +104,10 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article=Article::findOrFail($id);
+        if ($article->delete()) {
+            return new ArticleResource($article);
+        }
+        
     }
 }
