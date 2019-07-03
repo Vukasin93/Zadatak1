@@ -97,7 +97,12 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article=Article::find($id);
+       if(auth()->user()->id !== $article->user_id)
+       {
+        return redirect('/articles')->with('error','Error');
+       }
+       return view('articles.edit')->with('article',$article);
     }
 
     /**
@@ -109,7 +114,33 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'title'=>'required',
+            'body'=>'required',
+            'cover-image' => 'image|nullable|max:1999']);
+
+            
+        if($request->hasFile('cover-image'))
+        {
+            $fileNameWithExt= $request->file('cover-image')->getClientOriginalName();
+            $filename=pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $ext= $request->file('cover-image')->getClientOriginalExtension();
+            $fileNameToStore= $filename."_".time().".".$ext;
+            $path=$request->file('cover-image')->storeAs('public/cover-images', $fileNameToStore);
+        }
+      
+
+    
+            $article= Article::find($id);
+            $article->title = $request->input('title');
+            $article->body = $request->input('body');
+            if($request->hasFile('cover-image'))
+            {
+                $article->cover_image= $fileNameToStore; 
+            }
+            $article->save();
+    
+            return redirect ('/articles')->with('success', 'Post Updated');
     }
 
     /**

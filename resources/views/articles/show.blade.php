@@ -13,7 +13,7 @@
     <hr>
     @if(!Auth::guest())
         @if(Auth::user()->id == $article->user->id)
-        <a href='/zadatak/public/article/{{$article->id}}/edit' class='btn btn-default'>Edit</a>
+        <a href='/zadatak/public/articles/{{$article->id}}/edit' class='btn btn-default'>Edit</a>
         {{Form::open(['action' => ['ArticlesController@destroy',$article->id],'method' => 'POST' ,'class' =>'pull-right'])}}
         {{Form::hidden('_method','DELETE') }}
         {{Form::submit('Delete', ['class'=> 'btn btn-danger'])}}
